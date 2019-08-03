@@ -13,11 +13,11 @@ const cors = require('./configs/cors.config')
 
 // routers
 const authRouter = require('./routes/auth.routes');
-
+const recordRouter = require('./routes/recording.routes');
 // initializing express...
 const app = express();
 // middlewares
-// const secure = require('./middlewares/secure.mid');
+const secure = require('./middlewares/secure.mid');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,7 +29,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/', authRouter);
-// app.use('/tests', secure.isAuthenticated, testRouter)
+app.use('/recording', secure.isAuthenticated, recordRouter)
 
 
 //* Handling errors

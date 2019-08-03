@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10
-const URL_PATTERN = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+// const URL_PATTERN = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const userSchema = new mongoose.Schema({
   role: { 
     type: String,
-    enum: ['teacher', 'student'],
+    enum: ['teacher', 'student', 'admin'],
     default: 'student'
   },
   email: {
@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema({
         ret.id = doc._id;
         delete ret._id;
         delete ret.__v;
+        delete ret.createdAt;
+        delete ret.updatedAt;
         delete ret.password;
         return ret
       }

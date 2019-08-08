@@ -32,7 +32,7 @@ const recordingSchema = new mongoose.Schema({
     feel: {
       type: String, 
       enum: ['confident', 'lost', 'nervous', 'nothing'],
-      required: true,
+      // required: true,
     }, 
     help: Boolean
   },

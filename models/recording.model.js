@@ -6,16 +6,21 @@ const recordingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  student: {
+  students: {
     type: [String], //it could be multiple students.  
-    required: true
+    validate: [arrayLimit, 'Should be two students']
   },
   name:{
-    type:String,
-    required: [true, 'give me your name, at least 3 letters'],
+    type: String,
+    unique: true,
+    required: [true, 'give me a recording name, at least 3 letters'],
     minlength: 3
   },
-  cognitive: { 
+  comments: {
+    type:String,
+    maxlength: 140
+  },
+  cognitive: [{ 
     //* first value for before and second value for after recording.
     startingConversation: [Boolean], 
     myOpinion: [Boolean],
@@ -27,16 +32,16 @@ const recordingSchema = new mongoose.Schema({
     smiling: [Boolean],
     eyeContact: [Boolean],
     bodyLanguage: [Boolean],
-  },
-  socioAffective : {
+  }],
+  socioAffective : [{
     feel: {
       type: String, 
       enum: ['confident', 'lost', 'nervous', 'nothing'],
       // required: true,
     }, 
     help: Boolean
-  },
-  future: {
+  }],
+  future: [{
     startingConversation: Boolean, //! I should find the way to re-use this keys.  
     myOpinion: Boolean,
     asking: Boolean,
@@ -47,7 +52,7 @@ const recordingSchema = new mongoose.Schema({
     smiling: Boolean,
     eyeContact: Boolean,
     bodyLanguage: Boolean,
-  }
+  }]
 }, {
     timestamps: true,
     toJSON: {
@@ -60,6 +65,17 @@ const recordingSchema = new mongoose.Schema({
       }
     }
   })
+
+function arrayLimit(val) {
+  return val.length === 2;
+}
+
+recordingSchema.post('save', function (error, _, next) {
+    next( error.code === 11000 
+      ?   new Error('That recording name already exist')
+      :   error)
+});
+
 
 const Recording = mongoose.model('Recording', recordingSchema);
 module.exports = Recording;

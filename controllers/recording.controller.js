@@ -18,7 +18,12 @@ module.exports.all = (req, res, next) => {
   Recording.find()
     .then(recording => {
       if(recording.length){
-        const preview = {id: recording.id, name: recording.name}
+        const preview = recording.map(r=>({
+          id: r.id, 
+          name: r.name, 
+          students: r.students, 
+          date: r.createdAt
+        }))
         res.status(200).json(preview)
       } else {
         res.status(404).json({message:'No recording created.'})

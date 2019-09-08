@@ -20,18 +20,18 @@ const recordingSchema = new mongoose.Schema({
     type:String,
     maxlength: 140
   },
-  cognitive: [{ 
+  cognitive: [{ //First object for student A, second for estudent B. 
     //* first value for before and second value for after recording.
-    startingConversation: [Boolean], 
-    myOpinion: [Boolean],
-    asking: [Boolean],
-    partnerGesture: [Boolean],
-    comments: [Boolean],
-    listeningPartnerIdeas: [Boolean],
-    answering: [Boolean],
-    smiling: [Boolean],
-    eyeContact: [Boolean],
-    bodyLanguage: [Boolean],
+    startingConversation: [{ type: Boolean, default: false, }], 
+    myOpinion: [{ type: Boolean, default: false, }],
+    asking: [{ type: Boolean, default: false, }],
+    partnerGesture: [{ type: Boolean, default: false, }],
+    comments: [{ type: Boolean, default: false, }],
+    listeningPartnerIdeas: [{ type: Boolean, default: false, }],
+    answering: [{ type: Boolean, default: false, }],
+    smiling: [{ type: Boolean, default: false, }],
+    eyeContact: [{ type: Boolean, default: false, }],
+    bodyLanguage: [{ type: Boolean, default: false, }],
   }],
   socioAffective : [{
     feel: {

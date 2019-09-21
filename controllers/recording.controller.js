@@ -60,10 +60,10 @@ module.exports.update = (req, res, next) => {
 }
 
 module.exports.delete = (req, res, next) => {
-  ClassRoom.findOneAndDelete({_id : req.params.id, owner: req.user.id})
+  Recording.findOneAndDelete({_id : req.params.id, owner: req.user.id})
     .then(recording => {
       if (!recording) {
-        throw createError(404, 'Class room not found')
+        throw createError(404, 'Recording not found')
       }
       res.status(204).send()
     })

@@ -22,6 +22,7 @@ const recordingSchema = new mongoose.Schema({
   },
   cognitive: [{ //First object for student A, second for estudent B. 
     //* first value for before and second value for after recording.
+    // * third value for o future recordings
     startingConversation: [{ type: Boolean, default: false, }], 
     myOpinion: [{ type: Boolean, default: false, }],
     asking: [{ type: Boolean, default: false, }],
@@ -37,21 +38,8 @@ const recordingSchema = new mongoose.Schema({
     feel: {
       type: String, 
       enum: ['confident', 'lost', 'nervous', 'nothing'],
-      // required: true,
     }, 
     help: Boolean
-  }],
-  future: [{
-    startingConversation: Boolean, //! I should find the way to re-use this keys.  
-    myOpinion: Boolean,
-    asking: Boolean,
-    partnerGesture: Boolean,
-    comments: Boolean,
-    listeningPartnerIdeas: Boolean,
-    answering: Boolean,
-    smiling: Boolean,
-    eyeContact: Boolean,
-    bodyLanguage: Boolean,
   }]
 }, {
     timestamps: true,

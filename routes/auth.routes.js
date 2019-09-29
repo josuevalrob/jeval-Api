@@ -4,6 +4,7 @@ const router = express.Router();
 
 const secure = require('../middlewares/secure.mid');
 const authController = require('../controllers/auth.controller');
+const storage = require('../configs/storage.config');
 
 router.post('/signup', authController.register);
 router.put('/signup', secure.isAuthenticated, authController.update)

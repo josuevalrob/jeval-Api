@@ -8,6 +8,7 @@ router.post('/', recordingCtr.create);
 router.get('/', recordingCtr.all);
 router.get('/:id', recordingCtr.get);
 router.put('/:id', recordingCtr.update);
+router.put('/:id/audio', recordingCtr.createAudio);
 router.delete('/:id', recordingCtr.delete);
 
 module.exports = router;

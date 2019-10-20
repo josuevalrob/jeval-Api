@@ -6,7 +6,7 @@ const FIRST_ADMIN_EMAIL = process.env.FIRST_ADMIN_EMAIL;
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const userSchema = new mongoose.Schema({
-  role: { 
+  role: {
     type: String,
     enum: ['teacher', 'student', 'admin'],
     default: 'student'

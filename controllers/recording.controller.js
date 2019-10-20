@@ -2,7 +2,55 @@
 const Recording = require('../models/recording.model');
 const createError = require('http-errors');
 const passport = require('passport');
+const fs = require('fs');
+const { promisify } = require('util');
+const { v4 } = require('uuid');
+const writeFile = promisify(fs.writeFile);
+// const readdir = promisify(fs.readdir);
 
+// make sure messages folder exists
+const messageFolder = './public/messages/';
+if (!fs.existsSync(messageFolder)) {
+  fs.mkdirSync(messageFolder);
+}
+module.exports.createAudio = (req, res, next) => {
+  const {id} = req.params
+  const {audioName, audioIds, audio} = req.body
+  Recording.findOneAndUpdate({_id: id}, {audioIds}, { new: true, runValidators: true, useFindAndModify: false })
+    .then( recording => {
+      if(recording) {
+        writeFile(messageFolder + audioName, audio, 'base64')
+          .then(() => {
+            res.status(201).json(recording)
+          })
+          .catch(err => { //! it should delete the id from recording.🤔
+            console.log('Error writing audio to file', err);
+            next(err)
+          });
+      } else {
+        next(createError(404, 'recording not found'))
+      }
+    })
+    .catch(next)
+}
+
+module.exports.update = (req, res, next) => {
+  const id = req.params.id
+  req.body.owner = req.user.id
+  Recording.findOneAndUpdate(
+    {_id: id},
+    req.body,
+    { new: true, runValidators: true, useFindAndModify: false })
+    .then(recording => {
+      if (recording) {
+        res.status(201).json(recording)
+      } else {
+        next(createError(404, 'recording not found'))
+      }
+    })
+    .catch(next)
+
+}
 
 module.exports.create = (req, res, next) => {
   req.body.owner = req.user.id
@@ -19,9 +67,9 @@ module.exports.all = (req, res, next) => {
     .then(recording => {
       if(recording.length){
         const preview = recording.map(r=>({
-          id: r.id, 
-          name: r.name, 
-          students: r.students, 
+          id: r.id,
+          name: r.name,
+          students: r.students,
           date: r.createdAt
         }))
         res.status(200).json(preview)
@@ -33,28 +81,11 @@ module.exports.all = (req, res, next) => {
 }
 
 module.exports.get = (req, res, next) => {
-//? it could be better for the performance if i divide this response. 
+//? it could be better for the performance if i divide this response.
   Recording.findById(req.params.id)
     // .populate('owner')  //? current user
     .then(recording => {
       res.status(201).json(recording)
-    })
-    .catch(next)
-}
-
-module.exports.update = (req, res, next) => {
-  const id = req.params.id
-  req.body.owner = req.user.id
-  Recording.findOneAndUpdate(
-    {_id: id}, 
-    req.body, 
-    { new: true, runValidators: true, useFindAndModify: false })
-    .then(recording => {
-      if (recording) {
-        res.status(201).json(recording)
-      } else {
-        next(createError(404, 'recording not found'))
-      } 
     })
     .catch(next)
 }

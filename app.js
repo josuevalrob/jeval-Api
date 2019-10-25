@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const createError = require('http-errors');
 const passport = require('passport');
+const bodyParser = require('body-parser');
+
 // configs
 require('./configs/db.config');
 require('./configs/passport.config');
@@ -19,7 +21,10 @@ const recordRouter = require('./routes/recording.routes');
 const app = express();
 // middlewares
 const secure = require('./middlewares/secure.mid');
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(logger('dev'));
+app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -39,7 +44,7 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-  console.error(error);  
+  console.error(error);
   res.status(error.status || 500);
   const data = {};
 

@@ -1,15 +1,13 @@
 // const User = require('../models/user.model'); //? I got the user from passport.
 const Recording = require('../models/recording.model');
 const createError = require('http-errors');
-const passport = require('passport');
+var path = require('path');
 const fs = require('fs');
 const { promisify } = require('util');
-const { v4 } = require('uuid');
 const writeFile = promisify(fs.writeFile);
-// const readdir = promisify(fs.readdir);
+const readdir = promisify(fs.readdir);
+const messageFolder = './public/messages/'
 
-// make sure messages folder exists
-const messageFolder = './public/messages/';
 if (!fs.existsSync(messageFolder)) {
   fs.mkdirSync(messageFolder);
 }

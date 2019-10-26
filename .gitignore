@@ -61,4 +61,4 @@ typings/
 .next
 
 # messages
-# public/messages/*
+public/messages/*

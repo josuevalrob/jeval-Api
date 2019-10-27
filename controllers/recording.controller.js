@@ -32,6 +32,31 @@ module.exports.createAudio = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.deleteAudio = (req, res, next) => {
+  const {id} = req.params
+  const {audioName, audioIds} = req.body
+  Recording.findOneAndUpdate({_id: id}, {audioIds}, { new: true, runValidators: true, useFindAndModify: false })
+    .then( recording => {
+      if(recording) {
+         fs.stat(messageFolder + audioName, function (err, stats) {
+          // console.log(stats);//here we got all information of file in stats variable
+          if (err) {
+              return console.error(err);
+          }
+          fs.unlink(messageFolder + audioName,function(err){
+                if(err) return console.log(err);
+                console.log('file deleted successfully');
+                res.status(204).send()
+          });
+        });
+      } else {
+        next(createError(404, 'recording not found'))
+      }
+    })
+    .catch()
+
+}
+
 module.exports.update = (req, res, next) => {
   const id = req.params.id
   req.body.owner = req.user.id

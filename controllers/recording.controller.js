@@ -11,6 +11,38 @@ const messageFolder = './public/messages/'
 if (!fs.existsSync(messageFolder)) {
   fs.mkdirSync(messageFolder);
 }
+module.exports.singleAudio = (req, res, next) => {
+  const {id} = req.params
+  const {audioName, audio} = req.body
+  Recording
+    .findOneAndUpdate(
+      {_id: id}, 
+      {audioId:audioName}, 
+      { new: true, runValidators: true, useFindAndModify: false })
+    .then( recording => {
+      if (recording)
+        writeFile(messageFolder + audioName, audio, 'base64')
+          .then(() => res.status(201).json(recording)) //everything is okey, response with 201
+          .catch(err => { //! it should delete the id from recording.🤔
+            console.log('Error writing audio to file', err);
+            next(err)
+          });
+      else
+        next(createError(404, 'recording not found'))
+    })
+    .catch(next)
+}
+module.exports.singleDelete = ( req,res,next ) => {
+  const {id} = req.params
+  const {audioName} = req.body
+  Recording
+    .findOneAndUpdate(
+      {_id: id}, 
+      {audioId:''}, 
+      { new: true, runValidators: true, useFindAndModify: false })
+    .then((r)=>deleteData(r, audioName, res))
+    .catch(next)
+}
 module.exports.createAudio = (req, res, next) => {
   const {id} = req.params
   const {audioName, audioIds, audio} = req.body
@@ -114,12 +146,33 @@ module.exports.get = (req, res, next) => {
 }
 
 module.exports.delete = (req, res, next) => {
+  //! here we should delete also the recording from message folder. 
+  //* maybe a promise all with fs.unlink with all the message from the current recording
   Recording.findOneAndDelete({_id : req.params.id, owner: req.user.id})
     .then(recording => {
       if (!recording) {
         throw createError(404, 'Recording not found')
       }
-      res.status(204).send()
+      deleteData(recording, recording.audioId, res)
+      // res.status(204).send()
     })
     .catch(next)
+}
+
+const deleteData = (recording, audioName, res) => {
+  if(recording) {
+    fs.stat(messageFolder + audioName, function (err, stats) {
+     // console.log(stats);//here we got all information of file in stats variable
+     if (err) {
+         return console.error(err);
+     }
+     fs.unlink(messageFolder + audioName,function(err){
+           if(err) return console.log(err);
+           console.log('file deleted successfully');
+           res.status(204).send()
+     });
+   });
+ } else {
+   next(createError(404, 'recording not found'))
+ }
 }

@@ -153,8 +153,10 @@ module.exports.delete = (req, res, next) => {
       if (!recording) {
         throw createError(404, 'Recording not found')
       }
-      deleteData(recording, recording.audioId, res)
-      // res.status(204).send()
+      if(recording.audioId)
+        deleteData(recording, recording.audioId, res)
+      else
+        res.status(204).send()
     })
     .catch(next)
 }
@@ -167,8 +169,8 @@ const deleteData = (recording, audioName, res) => {
          return console.error(err);
      }
      fs.unlink(messageFolder + audioName,function(err){
-           if(err) return console.log(err);
-           console.log('file deleted successfully');
+           if(!err)
+            console.log('file deleted successfully');          
            res.status(204).send()
      });
    });

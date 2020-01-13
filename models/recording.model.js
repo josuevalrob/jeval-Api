@@ -43,7 +43,11 @@ const recordingSchema = new mongoose.Schema({
     help: Boolean
   }],
   audioIds: [[String]],
-  audioId: String
+  audioId: String, 
+  complete:  {
+    type:Boolean,
+    default: false
+  },
 }, {
     timestamps: true,
     toJSON: {

@@ -24,15 +24,16 @@ const recordingSchema = new mongoose.Schema({
     //* first value for before and second value for after recording.
     // * third value for o future recordings
     startingConversation: [{ type: Boolean, default: false, }], 
-    myOpinion: [{ type: Boolean, default: false, }],
-    asking: [{ type: Boolean, default: false, }],
-    partnerGesture: [{ type: Boolean, default: false, }],
-    comments: [{ type: Boolean, default: false, }],
-    listeningPartnerIdeas: [{ type: Boolean, default: false, }],
-    answering: [{ type: Boolean, default: false, }],
-    smiling: [{ type: Boolean, default: false, }],
+    risk: [{ type: Boolean, default: false, }], 
+    opinion: [{ type: Boolean, default: false, }],
+    askClarification: [{ type: Boolean, default: false, }],
+    provClarification: [{ type: Boolean, default: false, }],
+    askExamples: [{ type: Boolean, default: false, }],
+    giveExamples: [{ type: Boolean, default: false, }],
+    understanding: [{ type: Boolean, default: false, }],
     eyeContact: [{ type: Boolean, default: false, }],
-    bodyLanguage: [{ type: Boolean, default: false, }],
+    saySomething: [{ type: Boolean, default: false, }],
+    filters: [{ type: Boolean, default: false, }],
   }],
   socioAffective : [{
     feel: {

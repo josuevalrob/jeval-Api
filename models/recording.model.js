@@ -42,7 +42,7 @@ const recordingSchema = new mongoose.Schema({
     },
     help: Boolean
   }],
-  audioIds: [[String]],
+  // audioIds: [[String]],
   audioId: String, 
   complete:  {
     type:Boolean,

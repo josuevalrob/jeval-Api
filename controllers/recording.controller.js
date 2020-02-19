@@ -125,7 +125,8 @@ module.exports.all = (req, res, next) => {
           id: r.id,
           name: r.name,
           students: r.students,
-          date: r.createdAt
+          date: r.createdAt, 
+          audioId: r.audioId
         }))
         res.status(200).json(preview)
       } else {

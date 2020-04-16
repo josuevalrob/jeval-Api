@@ -9,7 +9,7 @@ const readdir = promisify(fs.readdir);
 const messageFolder = './public/messages/'
 
 if (!fs.existsSync(messageFolder)) {
-  fs.mkdirSync(messageFolder);
+  fs.mkdirSync(messageFolder, {recursive: true}, err => {});
 }
 module.exports.singleAudio = (req, res, next) => {
   const {id} = req.params

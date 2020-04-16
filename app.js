@@ -33,7 +33,9 @@ app.use(cors)
 app.use(session)
 app.use(passport.initialize())
 app.use(passport.session())
-
+app.get('/', function (req, res) {
+  res.send('Service Workin 🔥🔥!');
+});
 app.use('/', authRouter);
 app.use('/recording', secure.isAuthenticated, recordRouter)
 

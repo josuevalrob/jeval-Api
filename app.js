@@ -40,7 +40,7 @@ app.use('/recording', secure.isAuthenticated, recordRouter)
 
 //* Handling errors
 app.use((req, res, next) => {
-  next(createError(404))
+  next(createError(404, 'not found 🤷‍♂️'))
 })
 
 app.use((error, req, res, next) => {

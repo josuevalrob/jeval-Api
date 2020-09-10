@@ -7,9 +7,9 @@ module.exports = session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: false,
+    secure: true,
     httpOnly: true,
-    SameSite: "None",
+    sameSite: 'none',
     maxAge: 60 * 60 * 24 * 1000
   },
   store: new MongoStore({

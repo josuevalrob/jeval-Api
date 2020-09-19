@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema({
   teacher: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    required: true
   },
   name:{
     type:String,

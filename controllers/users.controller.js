@@ -4,14 +4,13 @@ const createError = require('http-errors');
 
 module.exports.update = (req, res, next) => {
   const id = req.params.id
-  req.body.owner = req.user.id
-  User.findOneAndUpdate(
-    {_id: id},
-    req.body,
-    { new: true, runValidators: true, useFindAndModify: false })
-    .then(User => {
-      if (User) {
-        res.status(201).json(User)
+  User.findById(id)
+    .then(user => {
+      if (user) {
+        Object.assign(user, req.body);
+        user.save()
+          .then(user => res.status(201).json(user))
+          .catch(createError(502, 'Mongoose error'))
       } else {
         next(createError(404, 'User not found'))
       }

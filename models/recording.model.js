@@ -20,11 +20,11 @@ const recordingSchema = new mongoose.Schema({
     type:String,
     maxlength: 140
   },
-  cognitive: [{ //First object for student A, second for estudent B. 
+  cognitive: [{ //First object for student A, second for estudent B.
     //* first value for before and second value for after recording.
-    // * third value for o future recordings
-    startingConversation: [{ type: Boolean, default: false, }], 
-    risk: [{ type: Boolean, default: false, }], 
+    //* third value for future recordings
+    startingConversation: [{ type: Boolean, default: false, }],
+    risk: [{ type: Boolean, default: false, }],
     opinion: [{ type: Boolean, default: false, }],
     askClarification: [{ type: Boolean, default: false, }],
     provClarification: [{ type: Boolean, default: false, }],

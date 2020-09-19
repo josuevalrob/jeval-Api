@@ -21,7 +21,7 @@ module.exports.authenticate = (req, res, next) => {
     if (error) {
       next(error);
     } else if (!user) {
-      next(createError(400, message));
+      next(createError(401, message));
     } else {
       req.login(user, (error) => {
         if (error) {

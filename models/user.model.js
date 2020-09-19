@@ -32,7 +32,12 @@ const userSchema = new mongoose.Schema({
     type:String,
     required: [true, 'give me your name, at least 3 letters'],
     minlength: 3
-  },   
+  },
+  lastName:{
+    type:String,
+    required: [true, 'give me your last name, at least 3 letters'],
+    minlength: 3
+  },
 }, {
     timestamps: true,
     toJSON: {

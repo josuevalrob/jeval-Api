@@ -24,12 +24,6 @@ module.exports.all = (req, res, next) => {
   User.find({teacher:req.user.id})
     .then(User => {
       if(User.length){
-        // const preview = User.map(r=>({
-        //   role
-        //   email
-        //   teacher
-        //   name
-        // }))
         res.status(200).json(User)
       } else {
         res.status(404).json({message:'No User created.'})

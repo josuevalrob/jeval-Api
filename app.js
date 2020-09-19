@@ -17,6 +17,7 @@ const cors = require('./configs/cors.config')
 // routers
 const authRouter = require('./routes/auth.routes');
 const recordRouter = require('./routes/recording.routes');
+const userRouter = require('./routes/users.routes');
 // initializing express...
 const app = express();
 // middlewares
@@ -37,6 +38,7 @@ app.get('/', function (req, res) {
   res.send('Service Workin 🔥🔥!');
 });
 app.use('/', authRouter);
+app.use('/user', secure.isAuthenticated, userRouter);
 app.use('/recording', secure.isAuthenticated, recordRouter)
 
 

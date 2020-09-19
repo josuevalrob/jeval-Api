@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     required: [true, 'we need a password'],
     minlength: 3 //? validate
   }, 
+  teacher: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   name:{
     type:String,
     required: [true, 'give me your name, at least 3 letters'],

@@ -4,6 +4,7 @@ const passport = require('passport');
 
 module.exports.register = (req, res, next) => {
   const { email } = req.body;
+  req.body.teacher = req.user.id
   User.findOne({ email: email })
     .then(user => {
       if (user) {

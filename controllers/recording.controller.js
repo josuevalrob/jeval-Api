@@ -90,12 +90,14 @@ module.exports.deleteAudio = (req, res, next) => {
 }
 
 module.exports.update = (req, res, next) => {
-  const id = req.params.id
-  req.body.owner = req.user.id
+  const id = req.params.id;
+  req.body.owner = req.user.id;
+  req.body.participants = req.body.students;
   Recording.findOneAndUpdate(
     {_id: id},
     req.body,
     { new: true, runValidators: true, useFindAndModify: false })
+    .populate('participants')
     .then(recording => {
       if (recording) {
         res.status(201).json(recording)
@@ -120,6 +122,7 @@ module.exports.create = (req, res, next) => {
   req.body.participants = req.body.students;
   new Recording(req.body)
     .save()
+    .populate('participants')
     .then(recording => {
       res.status(201).json(recording)
     })
@@ -157,7 +160,7 @@ module.exports.all = (req, res, next) => {
 module.exports.get = (req, res, next) => {
 //? it could be better for the performance if i divide this response.
   Recording.findById(req.params.id)
-    // .populate('owner')  //? current user
+    .populate('participants')
     .then(recording => {
       res.status(201).json(recording)
     })

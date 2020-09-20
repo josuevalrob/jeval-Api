@@ -122,7 +122,6 @@ module.exports.create = (req, res, next) => {
   req.body.participants = req.body.students;
   new Recording(req.body)
     .save()
-    .populate('participants')
     .then(recording => {
       res.status(201).json(recording)
     })

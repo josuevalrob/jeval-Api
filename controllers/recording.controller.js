@@ -109,6 +109,15 @@ module.exports.update = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   req.body.owner = req.user.id
+  //! refactor.
+  /*
+  In the first implementation we save the student name as string
+  The current data can not be merge with the new implementation
+  cuz it involves real users.
+  Now we are expecting ID in the field student to merge it with 
+  the requiered field "participants". 
+  */
+  req.body.participants = req.body.students;
   new Recording(req.body)
     .save()
     .then(recording => {
@@ -119,15 +128,24 @@ module.exports.create = (req, res, next) => {
 
 module.exports.all = (req, res, next) => {
   Recording.find()
-    .then(recording => {
-      if(recording.length){
-        const preview = recording.map(r=>({
-          id: r.id,
-          name: r.name,
-          students: r.students,
-          date: r.createdAt, 
-          audioId: r.audioId
-        }))
+    .populate('participants')
+    .then(recordings => {
+      if(recordings.length){
+        const preview = recordings.map(recording => {
+          return ({
+            id: recording.id,
+            name: recording.name,
+            audioId: recording.audioId,
+            participants: recording.participants,
+            // This condition is to merge previus implementation
+            // which save the user as string.
+            students: !!recording.participants.length
+              ? recording.participants.map(obj=>obj.name)
+              //! Student is deprecated
+              : recording.students,
+            date: recording.createdAt
+          })
+        })
         res.status(200).json(preview)
       } else {
         res.status(404).json({message:'No recording created.'})

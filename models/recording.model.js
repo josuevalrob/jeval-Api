@@ -7,9 +7,14 @@ const recordingSchema = new mongoose.Schema({
     required: true
   },
   students: {
-    type: [String], //it could be multiple students.  
-    validate: [arrayLimit, 'Should be two students']
+    //! Deprecated
+    type: [String] //it could be multiple students.
   },
+  participants: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }],
   name:{
     type: String,
     unique: true,

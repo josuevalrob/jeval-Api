@@ -1,6 +1,8 @@
 const User = require('../models/user.model');
 const createError = require('http-errors');
-
+const Efl = require('../models/efl.model');
+const Emotions = require('../models/emotions.model');
+const Strategies = require('../models/strategies.model');
 
 module.exports.update = (req, res, next) => {
   const id = req.params.id
@@ -45,11 +47,16 @@ module.exports.delete = (req, res, next) => {
   //! here we should delete also the User from message folder. 
   //* maybe a promise all with fs.unlink with all the message from the current User
   User.findOneAndDelete({_id : req.params.id, owner: req.user.id})
-    .then(User => {
+    .then(async User => {
       if (!User) {
         throw createError(404, 'User not found')
       }
-      res.status(204).send()
+
+      await Efl.findOneAndDelete({studentOwner:req.params.id});
+      await Emotions.findOneAndDelete({studentOwner:req.params.id});
+      await Strategies.findOneAndDelete({studentOwner:req.params.id});
+
+      return res.status(204).send()
     })
     .catch(next)
 }

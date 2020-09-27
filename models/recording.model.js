@@ -66,11 +66,6 @@ const recordingSchema = new mongoose.Schema({
     }
   })
 
-function arrayLimit(val) {
-  //! this doesn't validatae if the user is empty ""
-  return val.length === 2;
-}
-
 recordingSchema.post('save', function (error, _, next) {
     next( error.code === 11000 
       ?   new Error('That recording name already exist')

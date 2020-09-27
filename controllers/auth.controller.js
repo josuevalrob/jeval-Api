@@ -1,16 +1,32 @@
 const User = require('../models/user.model');
+const Efl = require('../models/efl.model');
+const Emotions = require('../models/emotions.model');
+const Strategies = require('../models/strategies.model');
 const createError = require('http-errors');
 const passport = require('passport');
 
+
+
 module.exports.register = (req, res, next) => {
   const { email } = req.body;
-  req.body.teacher = req.user.id
+  req.body.teacher = req.user.id; //Teacher
   User.findOne({ email: email })
-    .then(user => {
+    .then(async user => {
       if (user) {
         throw createError(409, {message:'Email already registered'})
       } else {
-        return new User(req.body).save();
+        const student = await new User(req.body).save()
+        const aditionalData = {
+          studentowner: student._id,
+          teacher: student.teacher
+        }
+        const [eflProfile, emoProfile, strProfile] = await Promise.all([
+          new Efl(aditionalData).save(),
+          new Emotions(aditionalData).save(),
+          new Strategies(aditionalData).save()
+        ]).then((resolve) => resolve.map(data=>data._id))
+
+        return Object.assign({}, student._doc, {eflProfile, emoProfile, strProfile});
       }
     })
     .then(user => res.status(201).json(user))

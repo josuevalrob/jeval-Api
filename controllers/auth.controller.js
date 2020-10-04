@@ -5,6 +5,19 @@ const Strategies = require('../models/strategies.model');
 const createError = require('http-errors');
 const passport = require('passport');
 
+module.exports.singup = (req, res, next) => {
+  const { email } = req.body;
+  User.findOne({ email: email })
+    .then(user => {
+      if (user) {
+        throw createError(409, {message:'Email already registered'})
+      } else {
+        return new User(req.body).save();
+      }
+    })
+    .then(user => res.status(201).json(user))
+    .catch(next)
+}
 
 
 module.exports.register = (req, res, next) => {

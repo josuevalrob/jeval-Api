@@ -12,13 +12,13 @@ const eflSchema = new mongoose.Schema({
     required: true
   },
   questions: {
-    age: { type: String },
-    gender: { type: String, enum : ['female','male'],  },
-    tongue: { type: String },
-    studyHours: { type: String, enum : ['1-2 hours', '3-4 hours', 'More than 4 hours'], },
-    why: { type: String },
-    otherTongue: { type: String },
-    opinionLearningOtherLanguage: { type: String, enum : ['Very Important', 'Important', 'No so important']},
+    age: { type: String, default: 0},
+    gender: { type: String, enum : ['female','male'], default: 'male'},
+    tongue: { type: String, default: ''},
+    studyHours: { type: String, enum : ['1-2 hours', '3-4 hours', 'More than 4 hours'], default: '1-2 hours'},
+    why: { type: String, default: ''},
+    otherTongue: { type: String, default: ''},
+    opinionLearningOtherLanguage: { type: String, enum : ['Very Important', 'Important', 'No so important'], default:'Important'},
   },
 }, {
     timestamps: true,

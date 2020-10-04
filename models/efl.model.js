@@ -17,7 +17,7 @@ const eflSchema = new mongoose.Schema({
     tongue: { type: String, default: ''},
     studyHours: { type: String, enum : ['1-2 hours', '3-4 hours', 'More than 4 hours'], default: '1-2 hours'},
     why: { type: String, default: ''},
-    otherTongue: { type: String, default: ''},
+    otherTongue: [{ type: String, default: ''}],
     opinionLearningOtherLanguage: { type: String, enum : ['Very Important', 'Important', 'No so important'], default:'Important'},
   },
 }, {

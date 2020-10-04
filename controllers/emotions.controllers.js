@@ -40,6 +40,7 @@ const labels = [
   {
     key:'emotions',
     label: 'Choose the emotions (one or more) you would feel in Scenario 1.',
+    type:'multiple',
     options: [
       'kind',
       'anxious',

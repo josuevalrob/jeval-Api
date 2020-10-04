@@ -46,7 +46,7 @@ module.exports.get = (req, res, next) => {
 module.exports.delete = (req, res, next) => {
   //! here we should delete also the User from message folder. 
   //* maybe a promise all with fs.unlink with all the message from the current User
-  User.findOneAndDelete({_id : req.params.id, owner: req.user.id})
+  User.findOneAndDelete({_id : req.params.id, teacher: req.user.id})
     .then(async User => {
       if (!User) {
         throw createError(404, 'User not found')

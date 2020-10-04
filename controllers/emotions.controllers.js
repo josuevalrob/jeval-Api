@@ -5,13 +5,13 @@ module.exports.update = (req, res, next) => {
   const id = req.params.id; //student
   Emotions.findOneAndUpdate(
     {studentowner: id},
-    req.body,
-    { new: true, runValidators: true, useFindAndModify: false })
+    { $set: {'questions': req.body} },
+    { new: true, upsert: true, runValidators: true, useFindAndModify: false })
     .populate('studentowner')
     .populate('teacher')
     .then(Emotions => {
       if (Emotions) {
-        res.status(201).json(Emotions)
+        res.status(201).json(Object.assign({}, Emotions._doc, {labels}))
       } else {
         next(createError(404, 'Emotions not found'))
       }

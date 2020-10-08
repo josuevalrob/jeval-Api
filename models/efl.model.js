@@ -13,9 +13,9 @@ const eflSchema = new mongoose.Schema({
   },
   questions: {
     age: { type: String, default: 0},
-    gender: { type: String, enum : ['female','male'], default: 'male'},
+    gender: { type: String, enum : ['female','male']},
     tongue: { type: String, default: ''},
-    studyHours: { type: String, enum : ['1-2 hours', '3-4 hours', 'More than 4 hours'], default: '1-2 hours'},
+    studyHours: { type: String, enum : ['1-2 hours', '3-4 hours', 'More than 4 hours']},
     why: {
       interested: { type: Boolean, default: false, },
       curriculum: { type: Boolean, default: false, },
@@ -29,7 +29,7 @@ const eflSchema = new mongoose.Schema({
     },
     why_other:  { type: String, default: ''},
     otherTongue: { type: String, default: ''},
-    opinionLearningOtherLanguage: { type: String, enum : ['Very Important', 'Important', 'No so important'], default:'Important'},
+    opinionLearningOtherLanguage: { type: String, enum : ['Very Important', 'Important', 'No so important']},
   },
 }, {
     timestamps: true,

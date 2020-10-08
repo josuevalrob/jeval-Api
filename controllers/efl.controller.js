@@ -52,7 +52,19 @@ const labels = [
   {
     label: 'Why do you study English',
     key: 'why',
+    type:'multiple',
     options: [
+      'interested',
+      'curriculum',
+      'culture',
+      'friends',
+      'career',
+      'travel',
+      'study',
+      'work',
+      'other'
+    ],
+    labels: [
       'I am interested in English.',
       'It is in the curriculum',
       'I want to learn its culture.',
@@ -61,7 +73,12 @@ const labels = [
       'I need it to travel.',
       'I want to study abroad.',
       'I will ned it to work',
+      'Other motivation'
     ]
+  },
+  {
+    label: 'In case that you marked "other" as your motivation for study english, tell us what is it:',
+    key: 'why_other',
   },
   {
     label: 'Do you speak any other language (different from Spanish and English)',

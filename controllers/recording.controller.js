@@ -122,8 +122,11 @@ module.exports.create = (req, res, next) => {
   req.body.participants = req.body.students;
   new Recording(req.body)
     .save()
-    .then(recording => {
-      res.status(201).json(recording)
+    .then(newRecording => {
+      Recording
+        .findById(newRecording._id)
+        .populate('participants')
+        .then(recording => res.status(201).json(recording))
     })
     .catch(next)
 }

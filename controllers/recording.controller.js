@@ -19,6 +19,7 @@ module.exports.singleAudio = (req, res, next) => {
       {_id: id}, 
       {audioId:audioName}, 
       { new: true, runValidators: true, useFindAndModify: false })
+    .populate('participants')
     .then( recording => {
       if (recording)
         writeFile(messageFolder + audioName, audio, 'base64')
@@ -36,6 +37,7 @@ module.exports.singleDelete = ( req,res,next ) => {
   const {id} = req.params
   const {audioName} = req.body
   Recording
+    .populate('participants')
     .findOneAndUpdate(
       {_id: id}, 
       {audioId:''}, 
@@ -47,6 +49,7 @@ module.exports.createAudio = (req, res, next) => {
   const {id} = req.params
   const {audioName, audioIds, audio} = req.body
   Recording.findOneAndUpdate({_id: id}, {audioIds}, { new: true, runValidators: true, useFindAndModify: false })
+    .populate('participants')
     .then( recording => {
       if(recording) {
         writeFile(messageFolder + audioName, audio, 'base64')
@@ -68,6 +71,7 @@ module.exports.deleteAudio = (req, res, next) => {
   const {id} = req.params
   const {audioName, audioIds} = req.body
   Recording.findOneAndUpdate({_id: id}, {audioIds}, { new: true, runValidators: true, useFindAndModify: false })
+    .populate('participants')
     .then( recording => {
       if(recording) {
          fs.stat(messageFolder + audioName, function (err, stats) {

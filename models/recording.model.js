@@ -45,7 +45,8 @@ const recordingSchema = new mongoose.Schema({
       type: String,
       enum: ['confident', 'lost', 'nervous', 'nothing'],
     },
-    help: Boolean
+    help: Boolean,
+    audioId: String
   }],
   // audioIds: [[String]],
   audioId: String, 

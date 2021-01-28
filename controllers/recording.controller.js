@@ -13,16 +13,17 @@ if (!fs.existsSync(messageFolder)) {
 }
 module.exports.singleAudio = (req, res, next) => {
   const {id} = req.params
-  const {audioName, audio} = req.body
+  const {query, audio} = req.body
+  console.log('😅',query)
   Recording
     .findOneAndUpdate(
-      {_id: id}, 
-      {audioId:audioName}, 
+      {_id: id},
+      {...query},
       { new: true, runValidators: true, useFindAndModify: false })
     .populate('participants')
     .then( recording => {
       if (recording)
-        writeFile(messageFolder + audioName, audio, 'base64')
+        writeFile(messageFolder + query.audioId, audio, 'base64')
           .then(() => res.status(201).json(recording)) //everything is okey, response with 201
           .catch(err => { //! it should delete the id from recording.🤔
             console.log('Error writing audio to file', err);

@@ -44,6 +44,7 @@ app.use('/recording', secure.isAuthenticated, recordRouter)
 
 //* Handling errors
 app.use((req, res, next) => {
+  console.log('🔥  '+ req.baseUrl + req.path);  // => /account
   next(createError(404, 'not found 🤷‍♂️'))
 })
 

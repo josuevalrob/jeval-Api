@@ -25,7 +25,7 @@ const secure = require('./middlewares/secure.mid');
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(logger('dev'));
-app.use(express.static('public'))
+app.use('/api/messages', express.static('public/messages'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -34,12 +34,12 @@ app.use(cors)
 app.use(session)
 app.use(passport.initialize())
 app.use(passport.session())
-app.get('/', function (req, res) {
+app.get('/api/', function (req, res) {
   res.send('Service Workin 🔥🔥!');
 });
-app.use('/', authRouter);
-app.use('/user', secure.isAuthenticated, userRouter);
-app.use('/recording', secure.isAuthenticated, recordRouter)
+app.use('/api/', authRouter);
+app.use('/api/user', secure.isAuthenticated, userRouter);
+app.use('/api/recording', secure.isAuthenticated, recordRouter)
 
 
 //* Handling errors

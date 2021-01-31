@@ -38,11 +38,11 @@ module.exports.singleDelete = ( req,res,next ) => {
   const {id} = req.params
   const {audioName} = req.body
   Recording
-    .populate('participants')
     .findOneAndUpdate(
-      {_id: id}, 
-      {audioId:''}, 
+      {_id: id},
+      {audioId:''},
       { new: true, runValidators: true, useFindAndModify: false })
+    .populate('participants')
     .then((r)=>deleteData(r, audioName, res))
     .catch(next)
 }

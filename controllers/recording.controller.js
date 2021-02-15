@@ -5,7 +5,6 @@ var path = require('path');
 const fs = require('fs');
 const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
-const readdir = promisify(fs.readdir);
 const messageFolder = './public/messages/'
 
 if (!fs.existsSync(messageFolder)) {
@@ -13,17 +12,17 @@ if (!fs.existsSync(messageFolder)) {
 }
 module.exports.singleAudio = (req, res, next) => {
   const {id} = req.params
-  const {query, audio} = req.body
-  console.log('😅',query)
+  const {query, audio, audioName} = req.body
+  console.log('😅', query)
   Recording
     .findOneAndUpdate(
       {_id: id},
-      {...query},
+      query,
       { new: true, runValidators: true, useFindAndModify: false })
     .populate('participants')
     .then( recording => {
       if (recording)
-        writeFile(messageFolder + query.audioId, audio, 'base64')
+        writeFile(messageFolder + audioName, audio, 'base64')
           .then(() => res.status(201).json(recording)) //everything is okey, response with 201
           .catch(err => { //! it should delete the id from recording.🤔
             console.log('Error writing audio to file', err);
@@ -36,14 +35,14 @@ module.exports.singleAudio = (req, res, next) => {
 }
 module.exports.singleDelete = ( req,res,next ) => {
   const {id} = req.params
-  const {audioName} = req.body
+  const {audioName, query} = req.body
   Recording
     .findOneAndUpdate(
       {_id: id},
-      {audioId:''},
+      query,
       { new: true, runValidators: true, useFindAndModify: false })
     .populate('participants')
-    .then((r)=>deleteData(r, audioName, res))
+    .then((r)=>deleteData(r, audioName, res, next))
     .catch(next)
 }
 module.exports.createAudio = (req, res, next) => {
@@ -190,7 +189,8 @@ module.exports.delete = (req, res, next) => {
     .catch(next)
 }
 
-const deleteData = (recording, audioName, res) => {
+const deleteData = (recording, audioName, res, next) => {
+  console.log('🗑', audioName)
   if(recording) {
     fs.stat(messageFolder + audioName, function (err, stats) {
      // console.log(stats);//here we got all information of file in stats variable
@@ -199,7 +199,7 @@ const deleteData = (recording, audioName, res) => {
      }
      fs.unlink(messageFolder + audioName,function(err){
            if(!err)
-            console.log('file deleted successfully');          
+            console.log('🚮 file deleted successfully');
            res.status(204).send()
      });
    });

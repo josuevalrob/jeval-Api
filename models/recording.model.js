@@ -43,7 +43,7 @@ const recordingSchema = new mongoose.Schema({
   socioAffective : [{
     feel: {
       type: String,
-      enum: ['confident', 'lost', 'nervous', 'nothing'],
+      enum: ['confident', 'lost', 'nervous', 'nothing', ''],
     },
     help: Boolean,
     audioId: String
